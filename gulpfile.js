@@ -66,9 +66,15 @@ exports.css = minicss;
 
 // min js 壓縮js及檢查語法
 const uglify = require('gulp-uglify');
+// babel es6 - > es5
+const babel = require('gulp-babel');
+
 function minijs(){
     return src("src/js/*.js")
     .pipe(uglify())
+    .pipe(babel({
+        presets: ['@babel/env']
+    }))
     .pipe(rename({
         extname: ".min.js"
     }))
@@ -76,6 +82,17 @@ function minijs(){
 }
 
 exports.js = minijs;
+
+// test babel es6 - > es5
+function babel5() {
+    return src('src/js/*.js')
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(dest('dist/js/test'));
+}
+
+exports.jsbabel = babel5;
 
 
 // SourceMap 讓 css 文件可以追朔 sass
@@ -159,5 +176,31 @@ function browser(done) {
     done(); // 完成
 }
 
-exports.default = series(parallel(styleSass, includeHTML, minijs, moveimages), browser);  // 執行輸入 --> gult ， 因為取名為default
 
+// 壓縮圖片
+const imagemin = require('gulp-imagemin');
+
+function min_images(){
+    return src('src/images/*.*', 'src/images/**/*.*')
+    .pipe(imagemin([
+        imagemin.mozjpeg({quality: 70, progressive: true}) // 壓縮品質      quality越低 -> 壓縮越大 -> 品質越差 
+    ]))
+    .pipe(dest('dist/images/min'))
+}
+
+// 打包上線用 清除舊檔案
+const clean = require('gulp-clean');
+
+function clear() {
+  return src('dist' ,{ read: false ,allowEmpty: true }) // 不去讀檔案結構，增加刪除效率, allowEmpty : 允許刪除空的檔案
+  .pipe(clean({force: true})); //強制刪除檔案
+}
+
+exports.cleanold = clear;
+
+exports.minifyimg = min_images;
+
+// 開發用
+exports.default = series(parallel(styleSass, includeHTML, minijs, moveimages), browser);  // 執行輸入 --> gult ， 因為取名為default
+// 上線用。  先清除 再打包
+exports.package = series(clear, parallel(styleSass, includeHTML, minijs, min_images));
