@@ -7,3 +7,8 @@ body h1{
     font-size: 40px;
     color:darkcyan;
 }
+
+.wrapper {
+    height: 550px;
+ 
+ }

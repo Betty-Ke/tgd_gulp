@@ -9,8 +9,11 @@ console.log(a(10));
 
 // jQuery。要先安裝
 import $ from 'jquery';
+
+// css&style loader 要先安裝
 import './css/style.css';
 import './css/header.css';
 import './css/footer.css';
+import './sass/main.scss';
 
 $('body').css('background-color', "pink");
