@@ -9,11 +9,23 @@ console.log(a(10));
 
 // jQuery。要先安裝
 import $ from 'jquery';
+import { gsap } from "gsap";
+
+
+gsap.to('.logo', {
+    duration: 1,
+    x: 300,
+    y: 10,
+    repeat: -1,
+    yoyo: true,
+    rotation: 360,
+})
 
 // css&style loader 要先安裝
 import './css/style.css';
 import './css/header.css';
 import './css/footer.css';
 import './sass/main.scss';
+
 
 $('body').css('background-color', "pink");
