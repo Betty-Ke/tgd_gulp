@@ -82,6 +82,8 @@ exports.js = minijs;
 const sourcemaps = require('gulp-sourcemaps');
 // sass 編譯
 const sass = require('gulp-sass')(require('sass'));
+// 解決跨瀏覽器的問題
+const autoprefixer = require('gulp-autoprefixer');
 
 function styleSass(){
     return src("src/sass/*.scss")
@@ -92,6 +94,9 @@ function styleSass(){
     // .pipe(rename({
     //     extname: ".min.css"                     // 可以再更名
     // }))
+    .pipe(autoprefixer({
+        cascade: false
+    }))
     .pipe(sourcemaps.write())
     .pipe(dest("./dist/css"));
 }
