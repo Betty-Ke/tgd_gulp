@@ -8,8 +8,18 @@ console.log(a(10));
 
 
 // jQuery。要先安裝
-import $ from 'jquery';
+// import $ from 'jquery';
 import { gsap } from "gsap";
+import Vue from "vue";
+
+
+// vue
+new Vue({
+    el: "#app",
+    data:{
+        text: "logo"
+    }
+})
 
 
 gsap.to('.logo', {
